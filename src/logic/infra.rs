@@ -1,7 +1,11 @@
+
+#[derive(PartialEq, Clone)]
 pub struct Infra {
-    arms : Vec<Arm>,
+    pub arms : Vec<Arm>,
 }
 
+
+#[derive(PartialEq, Clone)]
 pub struct Arm {
-    length: f32,
+    pub length: f32,
 }
