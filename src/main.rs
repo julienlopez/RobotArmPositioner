@@ -15,7 +15,7 @@ use crate::logic::{Arm, Infra, State};
 
 #[component]
 fn App() -> Element {
-    let infra = Infra{ arms: vec![Arm{length: 10.}, Arm{length: 15.}, Arm{ length: 5.}] };
+    let infra = Infra{ arms: vec![Arm{length: 40.}, Arm{length: 50.}, Arm{ length: 20.}] };
     let state = use_signal(|| State::new(infra.arms.len()));
 
     rsx! {
