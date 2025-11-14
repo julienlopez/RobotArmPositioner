@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 #[component]
-pub fn Home() -> Element {
+pub fn Screen() -> Element {
     rsx! {
         div { "This is a screen component." }
     }
