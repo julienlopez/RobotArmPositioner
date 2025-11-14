@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::logic::{Infra, State};
+use crate::logic::{solve, Infra, State};
 
 #[component]
 pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
@@ -58,7 +58,16 @@ pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
                 width: "800",
                 height: "600",
                 view_box: "0 0 600 600",
-                style: "border: 1px solid #ccc; background-color: #f9f9f9;",
+                style: "border: 1px solid #ccc; background-color: #f9f9f9; cursor: crosshair;",
+                onclick: move |evt| {
+                    let x = evt.data().page_coordinates().x;
+                    let y = evt.data().page_coordinates().y;
+
+                    // Call the solver with the clicked position
+                    if let Some(new_angles) = solve(&infra, (x as f32, y as f32)) {
+                        state.write().angles = new_angles;
+                    }
+                },
 
                 // Draw grid for reference
                 defs {
