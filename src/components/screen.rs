@@ -1,15 +1,18 @@
 use dioxus::prelude::*;
+use dioxus::logger::tracing;
 
 use crate::logic::{solve, Infra, State};
+
+const ORIGIN : (f32, f32)= (300.0, 400.0);
 
 #[component]
 pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
     let state_read = state.read();
 
     // Calculate the positions of each joint and end point
-    let mut points = vec![(300.0, 400.0)]; // Base position (origin)
-    let mut current_x = 300.0;
-    let mut current_y = 400.0;
+    let mut points = vec![ORIGIN]; // Base position (origin)
+    let mut current_x = ORIGIN.0;
+    let mut current_y = ORIGIN.1;
     let mut cumulative_angle = 0.0;
 
     for (arm, angle) in infra.arms.iter().zip(state_read.angles.iter()) {
@@ -60,11 +63,9 @@ pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
                 view_box: "0 0 600 600",
                 style: "border: 1px solid #ccc; background-color: #f9f9f9; cursor: crosshair;",
                 onclick: move |evt| {
-                    let x = evt.data().page_coordinates().x;
-                    let y = evt.data().page_coordinates().y;
-
-                    // Call the solver with the clicked position
-                    if let Some(new_angles) = solve(&infra, (x as f32, y as f32)) {
+                    let x = evt.data().element_coordinates().x;
+                    let y = evt.data().element_coordinates().y;
+                    if let Some(new_angles) = solve(&infra, ((x - 100.) as f32 - ORIGIN.0, -y as f32 + ORIGIN.1)) {
                         state.write().angles = new_angles;
                     }
                 },
