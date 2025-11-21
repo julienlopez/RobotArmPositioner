@@ -2,8 +2,7 @@ use dioxus::prelude::*;
 // use dioxus::logger::tracing;
 
 use crate::logic::{
-    solver::{RandomSolver, Solver},
-    Infra, State,
+    Infra, State, solver::{PsoSolver, RandomSolver, Solver}
 };
 
 const ORIGIN: (f32, f32) = (300.0, 400.0);
@@ -80,7 +79,7 @@ pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
                 onclick: move |evt| {
                     let x = evt.data().element_coordinates().x;
                     let y = evt.data().element_coordinates().y;
-                    if let Some(new_state) = RandomSolver::solve(&infra, ((x - 100.) as f32 - ORIGIN.0, -y as f32 + ORIGIN.1)) {
+                    if let Some(new_state) = PsoSolver::solve(&infra, ((x - 100.) as f32 - ORIGIN.0, -y as f32 + ORIGIN.1)) {
                         *state.write() = new_state;
                     }
                 },
