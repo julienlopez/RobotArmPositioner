@@ -1,9 +1,12 @@
 use dioxus::prelude::*;
 // use dioxus::logger::tracing;
 
-use crate::logic::{Infra, State, solver::{Solver, RandomSolver}};
+use crate::logic::{
+    solver::{RandomSolver, Solver},
+    Infra, State,
+};
 
-const ORIGIN : (f32, f32)= (300.0, 400.0);
+const ORIGIN: (f32, f32) = (300.0, 400.0);
 
 #[component]
 pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
@@ -42,8 +45,20 @@ pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
 
     // Create circles at joints
     let joints = points.iter().enumerate().map(|(i, (x, y))| {
-        let fill_color = if i == 0 { "red" } else if i == points.len() - 1 { "green" } else { "orange" };
-        let radius = if i == 0 { "8" } else if i == points.len() - 1 { "6" } else { "5" };
+        let fill_color = if i == 0 {
+            "red"
+        } else if i == points.len() - 1 {
+            "green"
+        } else {
+            "orange"
+        };
+        let radius = if i == 0 {
+            "8"
+        } else if i == points.len() - 1 {
+            "6"
+        } else {
+            "5"
+        };
         rsx! {
             circle {
                 cx: "{x}",
@@ -65,8 +80,8 @@ pub fn Screen(infra: Infra, state: Signal<State>) -> Element {
                 onclick: move |evt| {
                     let x = evt.data().element_coordinates().x;
                     let y = evt.data().element_coordinates().y;
-                    if let Some(new_angles) = RandomSolver::solve(&infra, ((x - 100.) as f32 - ORIGIN.0, -y as f32 + ORIGIN.1)) {
-                        state.write().angles = new_angles;
+                    if let Some(new_state) = RandomSolver::solve(&infra, ((x - 100.) as f32 - ORIGIN.0, -y as f32 + ORIGIN.1)) {
+                        *state.write() = new_state;
                     }
                 },
 

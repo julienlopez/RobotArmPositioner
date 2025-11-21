@@ -3,9 +3,9 @@ use dioxus::prelude::*;
 use crate::logic::{Infra, State};
 
 #[component]
-pub fn SideBar(infra : Infra, state: Signal<State>) -> Element {
+pub fn SideBar(infra: Infra, state: Signal<State>) -> Element {
     rsx! {
-        div { 
+        div {
             id: "sidebar",
             InfraBox { infra: infra.clone() }
             StateBox { state: state }
@@ -14,7 +14,7 @@ pub fn SideBar(infra : Infra, state: Signal<State>) -> Element {
 }
 
 #[component]
-pub fn InfraBox(infra : Infra) -> Element {
+pub fn InfraBox(infra: Infra) -> Element {
     rsx! {
         h2 { "Arms" }
         for arm in infra.arms.iter() {
